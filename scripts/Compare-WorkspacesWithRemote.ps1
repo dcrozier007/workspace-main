@@ -37,7 +37,7 @@ foreach ($workspace in $registry.workspaces) {
     $wsPath = $workspace.path
     
     if (-not (Test-Path $wsPath)) {
-        Write-Host "⚠ MISSING: $($workspace.name)" -ForegroundColor Yellow
+        Write-Host "[MISSING] $($workspace.name)" -ForegroundColor Yellow
         $results += @{
             name = $workspace.name
             status = "MISSING"
@@ -50,7 +50,7 @@ foreach ($workspace in $registry.workspaces) {
     $status = Get-RepositoryStatus -RepositoryPath $wsPath
     
     if (-not $status.isGitRepo) {
-        Write-Host "⚠ NOT GIT: $($workspace.name) (not a Git repository)" -ForegroundColor Yellow
+        Write-Host "[NOT_GIT] $($workspace.name) (not a Git repository)" -ForegroundColor Yellow
         $results += @{
             name = $workspace.name
             status = "NOT_GIT"
@@ -61,7 +61,7 @@ foreach ($workspace in $registry.workspaces) {
     }
     
     if ($status.remote -eq "NO_REMOTE") {
-        Write-Host "⚠ NO REMOTE: $($workspace.name) (no GitHub remote configured)" -ForegroundColor Yellow
+        Write-Host "[NO_REMOTE] $($workspace.name) (no GitHub remote configured)" -ForegroundColor Yellow
         $noRemote++
         $results += @{
             name = $workspace.name
@@ -82,22 +82,22 @@ foreach ($workspace in $registry.workspaces) {
     
     # Display status
     if ($behindCount -gt 0) {
-        Write-Host "⬇ BEHIND: $($workspace.name) ($behindCount commits behind)" -ForegroundColor Red
+        Write-Host "[BEHIND] $($workspace.name) ($behindCount commits behind)" -ForegroundColor Red
         if ($Detailed) {
             Write-Host "  Branch: $($status.branch)" -ForegroundColor DarkGray
             Write-Host "  Remote: $($status.remote)" -ForegroundColor DarkGray
             Write-Host "  Last commit: $($status.lastCommit)" -ForegroundColor DarkGray
         }
     } elseif ($aheadCount -gt 0) {
-        Write-Host "⬆ AHEAD: $($workspace.name) ($aheadCount commits ahead)" -ForegroundColor Yellow
+        Write-Host "[AHEAD] $($workspace.name) ($aheadCount commits ahead)" -ForegroundColor Yellow
         if ($Detailed) {
             Write-Host "  Branch: $($status.branch)" -ForegroundColor DarkGray
             Write-Host "  Remote: $($status.remote)" -ForegroundColor DarkGray
         }
     } else {
-        Write-Host "✓ UP-TO-DATE: $($workspace.name)" -ForegroundColor Green
+        Write-Host "[OK] UP-TO-DATE: $($workspace.name)" -ForegroundColor Green
         if ($Detailed -and $hasChanges) {
-            Write-Host "  ⚠ Has uncommitted changes" -ForegroundColor Yellow
+            Write-Host "  [WARN] Has uncommitted changes" -ForegroundColor Yellow
         }
     }
     
@@ -122,5 +122,5 @@ Write-Host "Total commits behind: $totalBehind" -ForegroundColor Red
 Write-Host ""
 
 if ($totalBehind -gt 0) {
-    Write-Host "⚠ Run: .\Pull-LatestFromAllWorkspaces.ps1" -ForegroundColor Yellow
+    Write-Host "[INFO] Run: .\Pull-LatestFromAllWorkspaces.ps1" -ForegroundColor Yellow
 }

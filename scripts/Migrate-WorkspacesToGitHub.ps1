@@ -45,7 +45,7 @@ foreach ($workspace in $registry.workspaces) {
     $wsPath = $workspace.path
     
     if (-not (Test-Path $wsPath)) {
-        Write-Host "⚠ SKIP: $wsName (path not found)" -ForegroundColor Yellow
+        Write-Host "[SKIP] $wsName (path not found)" -ForegroundColor Yellow
         $skippedCount++
         continue
     }
@@ -56,14 +56,14 @@ foreach ($workspace in $registry.workspaces) {
     # Check if already has GitHub remote
     $status = Get-RepositoryStatus -RepositoryPath $wsPath
     if ($status.isGitRepo -and $status.remote -ne "NO_REMOTE" -and $status.remote -like "*github.com*") {
-        Write-Host "✓ SKIP: $wsName (already has GitHub remote)" -ForegroundColor Green
+        Write-Host "[SKIP] $wsName (already has GitHub remote)" -ForegroundColor Green
         $skippedCount++
         continue
     }
     
     # Check if repository already exists
     if (Test-RepositoryExists -Owner $GitHubOwner -RepositoryName $repoName) {
-        Write-Host "✓ EXISTS: $wsName → $repoName" -ForegroundColor Cyan
+        Write-Host "[EXISTS] $wsName -> $repoName" -ForegroundColor Cyan
         
         # Update local repository with remote
         $remoteUrl = Get-GitHubRepositoryUrl -Owner $GitHubOwner -RepositoryName $repoName
@@ -78,11 +78,11 @@ foreach ($workspace in $registry.workspaces) {
         continue
     }
     
-    Write-Host "Creating: $wsName → $repoName..." -ForegroundColor Yellow
+    Write-Host "Creating: $wsName -> $repoName..." -ForegroundColor Yellow
     
     # Create GitHub repository
     if (-not (Create-GitHubRepository -RepositoryName $repoName -Description "Copilot workspace: $wsName")) {
-        Write-Host "✗ FAILED: Could not create GitHub repository for $wsName" -ForegroundColor Red
+        Write-Host "[FAILED] Could not create GitHub repository for $wsName" -ForegroundColor Red
         $errorCount++
         continue
     }
@@ -90,7 +90,7 @@ foreach ($workspace in $registry.workspaces) {
     # Initialize local Git repository
     $remoteUrl = Get-GitHubRepositoryUrl -Owner $GitHubOwner -RepositoryName $repoName
     if (-not (Initialize-GitRepository -RepositoryPath $wsPath -RemoteUrl $remoteUrl)) {
-        Write-Host "✗ FAILED: Could not initialize local repository for $wsName" -ForegroundColor Red
+        Write-Host "[FAILED] Could not initialize local repository for $wsName" -ForegroundColor Red
         $errorCount++
         continue
     }
@@ -102,7 +102,7 @@ foreach ($workspace in $registry.workspaces) {
         & git push -u origin main -q 2>&1 | Out-Null
         
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "✓ CREATED: $wsName → $repoName" -ForegroundColor Green
+            Write-Host "[CREATED] $wsName -> $repoName" -ForegroundColor Green
             $createdCount++
             
             # Update registry
@@ -112,11 +112,11 @@ foreach ($workspace in $registry.workspaces) {
                 url = $remoteUrl
             }
         } else {
-            Write-Host "✗ FAILED: Could not push to GitHub for $wsName" -ForegroundColor Red
+            Write-Host "[FAILED] Could not push to GitHub for $wsName" -ForegroundColor Red
             $errorCount++
         }
     } catch {
-        Write-Host "✗ FAILED: Error pushing $wsName : $_" -ForegroundColor Red
+        Write-Host "[FAILED] Error pushing $wsName : $_" -ForegroundColor Red
         $errorCount++
     } finally {
         Pop-Location
@@ -129,9 +129,9 @@ Save-WorkspaceRegistry -Registry $registry -RegistryPath $registryPath
 Write-Host "`n================================================" -ForegroundColor Cyan
 Write-Host "Migration Summary" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "✓ Created: $createdCount" -ForegroundColor Green
-Write-Host "⊘ Existing/Skipped: $skippedCount" -ForegroundColor Cyan
-Write-Host "✗ Errors: $errorCount" -ForegroundColor Red
+Write-Host "[CREATED] $createdCount" -ForegroundColor Green
+Write-Host "[SKIPPED] $skippedCount" -ForegroundColor Cyan
+Write-Host "[FAILED] $errorCount" -ForegroundColor Red
 Write-Host ""
 
 if ($errorCount -eq 0) {

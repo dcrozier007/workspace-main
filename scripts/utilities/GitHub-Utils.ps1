@@ -12,15 +12,15 @@ function Test-GitHubAuth {
     try {
         $output = & gh auth status 2>&1
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "✓ GitHub authenticated" -ForegroundColor Green
+            Write-Host "[OK] GitHub authenticated" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "✗ GitHub authentication required" -ForegroundColor Red
+            Write-Host "[ERROR] GitHub authentication required" -ForegroundColor Red
             Write-Host "Run: gh auth login" -ForegroundColor Yellow
             return $false
         }
     } catch {
-        Write-Host "✗ GitHub CLI not installed or not accessible" -ForegroundColor Red
+        Write-Host "[ERROR] GitHub CLI not installed or not accessible" -ForegroundColor Red
         return $false
     }
 }
@@ -45,14 +45,14 @@ function Create-GitHubRepository {
         $output = & gh repo create $RepositoryName --$visibility --description "$Description" 2>&1
         
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "✓ Repository created: $RepositoryName" -ForegroundColor Green
+            Write-Host "[OK] Repository created: $RepositoryName" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "✗ Failed to create repository: $output" -ForegroundColor Red
+            Write-Host "[FAILED] Failed to create repository: $output" -ForegroundColor Red
             return $false
         }
     } catch {
-        Write-Host "✗ Error creating repository: $_" -ForegroundColor Red
+        Write-Host "[ERROR] Error creating repository: $_" -ForegroundColor Red
         return $false
     }
 }

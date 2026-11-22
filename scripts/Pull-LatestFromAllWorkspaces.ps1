@@ -42,7 +42,7 @@ foreach ($workspace in $registry.workspaces) {
     
     if (-not (Test-Path $wsPath)) {
         if (-not $Quiet) {
-            Write-Host "⚠ SKIP: $wsName (path not found)" -ForegroundColor Yellow
+            Write-Host "[SKIP] $wsName (path not found)" -ForegroundColor Yellow
         }
         $skippedCount++
         continue
@@ -52,7 +52,7 @@ foreach ($workspace in $registry.workspaces) {
     
     if (-not $status.isGitRepo) {
         if (-not $Quiet) {
-            Write-Host "⚠ SKIP: $wsName (not a Git repository)" -ForegroundColor Yellow
+            Write-Host "[SKIP] $wsName (not a Git repository)" -ForegroundColor Yellow
         }
         $skippedCount++
         continue
@@ -60,7 +60,7 @@ foreach ($workspace in $registry.workspaces) {
     
     if ($status.remote -eq "NO_REMOTE") {
         if (-not $Quiet) {
-            Write-Host "⚠ SKIP: $wsName (no GitHub remote)" -ForegroundColor Yellow
+            Write-Host "[SKIP] $wsName (no GitHub remote)" -ForegroundColor Yellow
         }
         $skippedCount++
         continue
@@ -69,7 +69,7 @@ foreach ($workspace in $registry.workspaces) {
     # Check if behind
     if ($status.behind -eq 0 -and -not $Force) {
         if (-not $Quiet) {
-            Write-Host "✓ $wsName (already up-to-date)" -ForegroundColor Green
+            Write-Host "[OK] $wsName (already up-to-date)" -ForegroundColor Green
         }
         $successCount++
         continue
@@ -77,19 +77,19 @@ foreach ($workspace in $registry.workspaces) {
     
     # Pull latest
     if (-not $Quiet) {
-        Write-Host "⬇ Pulling: $wsName..." -ForegroundColor Cyan
+        Write-Host "[PULLING] $wsName..." -ForegroundColor Cyan
     }
     
     if (Pull-LatestFromRemote -RepositoryPath $wsPath -Force $Force) {
         if (-not $Quiet) {
-            Write-Host "✓ $wsName (pulled successfully)" -ForegroundColor Green
+            Write-Host "[OK] $wsName (pulled successfully)" -ForegroundColor Green
         }
         $successCount++
         
         # Update registry timestamp
         $workspace.lastSync = $timestamp
     } else {
-        Write-Host "✗ $wsName (pull failed)" -ForegroundColor Red
+        Write-Host "[FAILED] $wsName (pull failed)" -ForegroundColor Red
         $failureCount++
     }
 }
@@ -99,9 +99,9 @@ if (-not $Quiet) {
     Write-Host "`n================================================" -ForegroundColor Cyan
     Write-Host "Pull Summary" -ForegroundColor Cyan
     Write-Host "================================================" -ForegroundColor Cyan
-    Write-Host "✓ Successful: $successCount" -ForegroundColor Green
-    Write-Host "✗ Failed: $failureCount" -ForegroundColor $(if ($failureCount -gt 0) { "Red" } else { "Green" })
-    Write-Host "⊘ Skipped: $skippedCount" -ForegroundColor Yellow
+    Write-Host "[OK] Successful: $successCount" -ForegroundColor Green
+    Write-Host "[FAILED] Failed: $failureCount" -ForegroundColor $(if ($failureCount -gt 0) { "Red" } else { "Green" })
+    Write-Host "[SKIPPED] Skipped: $skippedCount" -ForegroundColor Yellow
     Write-Host ""
 }
 
