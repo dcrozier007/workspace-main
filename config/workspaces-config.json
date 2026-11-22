@@ -1,0 +1,100 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-11-22T16:54:00Z",
+  "owner": "dcrozier007",
+  "description": "Central registry of all Copilot workspaces managed via GitHub",
+  "workspaces": [
+    {
+      "name": "SQL Queries",
+      "path": "D:\\COPilot Workspaces\\SQL Queries",
+      "description": "SQL query development and optimization",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "Generate Demo Scripts",
+      "path": "D:\\COPilot Workspaces\\Generate Demo Scripts",
+      "description": "Demo script generation and templates",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "Server Post Build",
+      "path": "D:\\COPilot Workspaces\\Server Post Build",
+      "description": "Windows Server post-deployment configuration",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "Workspace-Templates",
+      "path": "D:\\COPilot Workspaces\\Workspace-Templates",
+      "description": "Templates for new workspace creation",
+      "github": {
+        "owner": "dcrozier007",
+        "repo": "Workspace-Templates",
+        "url": "https://github.com/dcrozier007/Workspace-Templates.git"
+      },
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "SQL Resource Governor",
+      "path": "D:\\COPilot Workspaces\\SQL Resource Governor",
+      "description": "SQL Server Resource Governor configuration",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "Pedalboard Build",
+      "path": "D:\\COPilot Workspaces\\Pedalboard Build",
+      "description": "Guitar pedalboard signal chain documentation",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "FileRename Process",
+      "path": "D:\\COPilot Workspaces\\FileRename Process",
+      "description": "Database file rename automation",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "GHCopilot Training",
+      "path": "D:\\COPilot Workspaces\\GHCopilot Training",
+      "description": "GitHub Copilot training materials",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "Prompt Engineering",
+      "path": "D:\\COPilot Workspaces\\Prompt Engineering",
+      "description": "Prompt engineering and optimization",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "General Music",
+      "path": "D:\\COPilot Workspaces\\General Music",
+      "description": "Music production and theory notes",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    },
+    {
+      "name": "TestWorkspace",
+      "path": "D:\\COPilot Workspaces\\TestWorkspace",
+      "description": "Test workspace for experimentation",
+      "github": null,
+      "syncEnabled": true,
+      "lastSync": null
+    }
+  ]
+}
